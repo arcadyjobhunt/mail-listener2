@@ -9,9 +9,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/chirag04/mail-listener2.git"
+        "url": "https://github.com/ws-fegon/mail-listener2.git"
     },
-    "homepage": "https://github.com/chirag04/mail-listener2",
+    "homepage": "https://github.com/ws-fegon/mail-listener2",
     "keywords": ["mail", "job", "imap", "mail listener", "email", "email parser"],
     "author": {
         "name": "Chirag Jain",

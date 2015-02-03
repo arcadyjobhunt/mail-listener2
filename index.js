@@ -100,8 +100,8 @@ function parseUnread() {
                     callback()
                   } else {
                     attachment.path = path.resolve(self.attachmentOptions.directory + attachment.generatedFileName);
-                    self.emit('attachment', attachment);
-                    callback()
+                    self.emit('attachment', attachment, mail.from[0].address);
+                    callback(null)
                   }
                 });
               }, function(err){

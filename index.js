@@ -101,7 +101,7 @@ function parseUnread() {
                   } else {
                     attachment.path = path.resolve(self.attachmentOptions.directory + attachment.generatedFileName);
                     self.emit('attachment', attachment, mail.from[0].address);
-                    callback(null)
+                    callback()
                   }
                 });
               }, function(err){
@@ -112,8 +112,10 @@ function parseUnread() {
               self.emit('mail',mail,seqno,attributes);
             }
           });
-          parser.on("attachment", function (attachment, from) {
-            self.emit('attachment', attachment, from);
+          var i = 0;
+          parser.on("attachment", function (attachment, mail, index) {
+            self.emit('attachment', attachment, mail.from[0].address, i);
+            i++
           });
           msg.on('body', function(stream, info) {
             stream.pipe(parser);

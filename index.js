@@ -112,8 +112,8 @@ function parseUnread() {
               self.emit('mail',mail,seqno,attributes);
             }
           });
-          parser.on("attachment", function (attachment) {
-            self.emit('attachment', attachment);
+          parser.on("attachment", function (attachment, from) {
+            self.emit('attachment', attachment, from);
           });
           msg.on('body', function(stream, info) {
             stream.pipe(parser);

@@ -34,8 +34,8 @@ function MailListener(options) {
     tlsOptions: options.tlsOptions || {}
   });
 
-  this.imap.once('ready', imapReady.bind(this));
-  this.imap.once('close', imapClose.bind(this));
+  this.imap.on('ready', imapReady.bind(this));
+  this.imap.on('close', imapClose.bind(this));
   this.imap.on('error', imapError.bind(this));
 }
 
@@ -114,6 +114,7 @@ function parseUnread() {
           });
           var i = 0;
           parser.on("attachment", function (attachment, mail, index) {
+            console.log('in module attachment, mail, index', attachment, mail, index);
             self.emit('attachment', attachment, mail.from[0].address, i);
             i++
           });

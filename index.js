@@ -88,10 +88,12 @@ function parseUnread() {
           markSeen: self.markSeen
         });
         f.on('message', function(msg, seqno) {
+          console.log('msg', msg);
           var parser = new MailParser(self.mailParserOptions);
           var attributes = null;
 
           parser.on("end", function(mail) {
+            console.log('mail', mail);
             if (!self.mailParserOptions.streamAttachments && mail.attachments && self.attachments) {
               async.each(mail.attachments, function( attachment, callback) {
                 fs.writeFile(self.attachmentOptions.directory + attachment.generatedFileName, attachment.content, function(err) {
@@ -100,6 +102,7 @@ function parseUnread() {
                     callback()
                   } else {
                     attachment.path = path.resolve(self.attachmentOptions.directory + attachment.generatedFileName);
+
                     self.emit('attachment', attachment, mail.from[0].address);
                     callback()
                   }
@@ -115,7 +118,7 @@ function parseUnread() {
           var i = 0;
           parser.on("attachment", function (attachment, mail, index) {
             console.log('in module attachment, mail, index', attachment, mail, index);
-            self.emit('attachment', attachment, mail.from[0].address, i);
+            self.emit('attachment', attachment, mail.from[0].address, mail.subject, i);
             i++
           });
           msg.on('body', function(stream, info) {

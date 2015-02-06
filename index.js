@@ -39,6 +39,7 @@ function MailListener(options) {
   this.imap.on('error', imapError.bind(this));
 }
 
+
 util.inherits(MailListener, EventEmitter);
 
 MailListener.prototype.start = function() {
@@ -47,6 +48,7 @@ MailListener.prototype.start = function() {
 
 MailListener.prototype.stop = function() {
   this.imap.end();
+  this.imap.removeAllListeners('mail')
 };
 
 function imapReady() {
@@ -88,12 +90,12 @@ function parseUnread() {
           markSeen: self.markSeen
         });
         f.on('message', function(msg, seqno) {
-          console.log('msg', msg);
+          // console.log('msg', msg);
           var parser = new MailParser(self.mailParserOptions);
           var attributes = null;
 
           parser.on("end", function(mail) {
-            console.log('mail', mail);
+            console.log('!!!!!!mail');
             if (!self.mailParserOptions.streamAttachments && mail.attachments && self.attachments) {
               async.each(mail.attachments, function( attachment, callback) {
                 fs.writeFile(self.attachmentOptions.directory + attachment.generatedFileName, attachment.content, function(err) {
@@ -117,7 +119,7 @@ function parseUnread() {
           });
           var i = 0;
           parser.on("attachment", function (attachment, mail, index) {
-            console.log('in module attachment, mail, index', attachment, mail, index);
+            // console.log('in module attachment, mail, index', attachment, mail, index);
             self.emit('attachment', attachment, mail.from[0].address, mail.subject, i);
             i++
           });
